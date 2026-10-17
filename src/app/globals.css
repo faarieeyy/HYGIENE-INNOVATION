@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FCFBF9;
+  --foreground: #1A2426;
+  --brand-primary: #023E46;
+  --brand-dark: #012E34;
+  --brand-accent: #0B5D68;
+  --brand-coral: #FA7268;
+  --brand-coral-hover: #E85B51;
+  --brand-sand: #FAF7F0;
+  --brand-sand-card: #F5F2EB;
+  --brand-border: #EAE3D2;
+}
+
+@theme {
+  --font-serif: var(--font-serif), 'Playfair Display', Georgia, Cambria, serif;
+  --font-sans: var(--font-sans), 'Plus Jakarta Sans', system-ui, sans-serif;
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-coral: var(--brand-coral);
+  --color-brand-coral-hover: var(--brand-coral-hover);
+  --color-brand-sand: var(--brand-sand);
+  --color-brand-sand-card: var(--brand-sand-card);
+  --color-brand-border: var(--brand-border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow-x: hidden;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1ede4;
+}
+::-webkit-scrollbar-thumb {
+  background: #023e4680;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #023e46;
+}
