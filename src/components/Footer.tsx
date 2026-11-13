@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { Logo } from './Logo';
 
 export function Footer() {
   const pathname = usePathname();
@@ -20,165 +21,183 @@ export function Footer() {
     }, 4000);
   };
 
-  // Dedicated Blueprint Footer for Food Service Page (Exact 1:1 match to Page 20 Blueprint)
-  if (pathname === '/food-service') {
+  // Dedicated Blueprint Footer for Contact Page (Exact 1:1 match to Contact Blueprint)
+  if (pathname === '/contact') {
     return (
-      <footer className="relative bg-[#012E28] text-white pt-14 pb-10 border-t border-white/10 overflow-hidden">
-        {/* Botanical Leaf Watermark at Bottom-Left */}
-        <div className="absolute -bottom-10 -left-10 w-72 h-72 pointer-events-none opacity-20">
-          <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" className="w-full h-full text-emerald-300">
-            <path d="M 20 180 C 40 120, 80 80, 150 30" strokeWidth="2" strokeLinecap="round" />
-            <path d="M 80 80 C 120 70, 160 50, 170 30 C 150 70, 130 90, 80 80 Z" strokeWidth="1.8" />
-            <path d="M 50 120 C 30 90, 20 60, 40 40 C 60 50, 70 80, 50 120 Z" strokeWidth="1.8" />
-            <path d="M 110 110 C 140 120, 170 130, 180 160 C 150 160, 130 140, 110 110 Z" strokeWidth="1.8" />
-            <path d="M 80 80 L 150 40" strokeWidth="1.2" strokeDasharray="3 3" />
-            <path d="M 50 120 L 35 55" strokeWidth="1.2" strokeDasharray="3 3" />
-          </svg>
-        </div>
-
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
-          {/* Main 3-Section Layout */}
-          <div className="flex flex-col lg:flex-row items-stretch justify-between gap-10 lg:gap-0">
-            {/* Section 1: Brand (Left) */}
-            <div className="w-full lg:w-[26%] flex flex-col items-start pr-0 lg:pr-6">
-              <Link href="/" aria-label="Hygiene Innovations">
-                <div className="relative w-[190px] sm:w-[215px] h-auto">
-                  <Image
-                    src="/images/footer_logo.webp"
-                    alt="Hygiene Innovations - Cleaner spaces. Brighter tomorrows."
-                    width={420}
-                    height={210}
-                    className="w-full h-auto object-contain"
-                  />
-                </div>
-              </Link>
+      <footer className="bg-[#013D38] text-white pt-14 pb-8 sm:pt-16 sm:pb-10 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 pb-12 border-b border-white/15">
+            {/* Column 1: Brand (4 cols) */}
+            <div className="lg:col-span-4 space-y-3.5">
+              <Logo variant="light" />
+              <p className="text-[13px] font-medium text-white/90 pt-1">
+                Professional essentials. Everyday clean.
+              </p>
+              <p className="text-xs text-white/70 leading-relaxed max-w-sm">
+                Quality cleaning and hygiene solutions for businesses across the UAE and GCC.
+              </p>
+              {/* Social Icons: LinkedIn, Instagram, YouTube */}
+              <div className="flex items-center gap-3.5 text-white/80 pt-2">
+                {/* LinkedIn */}
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="LinkedIn"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:text-[#FA7268] hover:border-[#FA7268] transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5H0v16h5V8zm7.982 0H8.014v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0V24H24V13.869c0-7.88-8.922-7.593-11.018-3.714V8z" />
+                  </svg>
+                </a>
+                {/* Instagram */}
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Instagram"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:text-[#FA7268] hover:border-[#FA7268] transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
+                  </svg>
+                </a>
+                {/* YouTube */}
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="YouTube"
+                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:text-[#FA7268] hover:border-[#FA7268] transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
 
-            {/* Vertical Divider 1 */}
-            <div className="hidden lg:block w-[1px] bg-white/20 self-stretch my-2" />
-
-            {/* Section 2: Newsletter Community (Center) */}
-            <div className="w-full lg:w-[42%] flex flex-col items-start px-0 lg:px-10">
-              <h3 className="font-serif text-[26px] sm:text-[30px] font-bold text-white tracking-tight leading-tight">
-                Stay kitchen-ready
-              </h3>
-              <p className="text-[14.5px] text-white/85 font-normal mt-2 mb-6 leading-relaxed">
-                Get product updates and practical tips for food-service teams.
+            {/* Column 2: Newsletter (4 cols) */}
+            <div className="lg:col-span-4 space-y-2">
+              <h4 className="font-serif text-lg sm:text-xl font-medium text-white">
+                Join our newsletter
+              </h4>
+              <p className="text-xs text-white/75 leading-relaxed max-w-sm pb-1">
+                Get the latest product updates, industry insights and more.
               </p>
-
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full max-w-[430px]">
+              <form onSubmit={handleSubscribe} className="flex items-center max-w-sm pt-1">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="bg-[#012520] border border-white/25 text-white placeholder-white/50 px-4 py-2.5 text-[14.5px] rounded-[3px] focus:outline-none focus:border-[#EF6F69] transition-colors flex-1"
+                  className="bg-white text-[#052C33] placeholder-slate-400 px-3.5 py-2.5 text-xs rounded-l-md w-full focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="bg-[#EF6F69] hover:bg-[#E55B4C] text-white font-semibold text-[14.5px] px-6 py-2.5 rounded-[3px] shrink-0 transition-colors shadow-sm"
+                  aria-label="Submit email"
+                  className="bg-[#FA7268] hover:bg-[#E55B4C] text-white px-4 py-2.5 text-sm font-bold rounded-r-md transition-colors flex items-center justify-center shrink-0"
                 >
-                  {subscribed ? 'Subscribed!' : 'Subscribe'}
+                  &rarr;
                 </button>
               </form>
+              {subscribed && (
+                <p className="text-xs text-emerald-300 font-medium">Thank you for subscribing!</p>
+              )}
             </div>
 
-            {/* Vertical Divider 2 */}
-            <div className="hidden lg:block w-[1px] bg-white/20 self-stretch my-2" />
+            {/* Column 3: Explore (2 cols) */}
+            <div className="lg:col-span-2">
+              <h4 className="font-serif text-base sm:text-lg font-medium text-white mb-3.5">
+                Explore
+              </h4>
+              <ul className="space-y-2 text-xs text-white/75">
+                <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+                <li><Link href="/shop" className="hover:text-white transition-colors">Shop All</Link></li>
+                <li><Link href="/cleaning" className="hover:text-white transition-colors">Cleaning</Link></li>
+                <li><Link href="/food-service" className="hover:text-white transition-colors">Food Service</Link></li>
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                <li>
+                  <Link href="/contact" className="relative inline-block text-white font-medium">
+                    Contact
+                    <span className="absolute -bottom-0.5 left-0 right-0 h-[1.5px] bg-[#FA7268]" />
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-            {/* Section 3: Links (Right - Explore & Support) */}
-            <div className="w-full lg:w-[28%] grid grid-cols-2 gap-8 pl-0 lg:pl-10">
-              {/* Explore */}
-              <div>
-                <h4 className="font-serif text-[18px] sm:text-[20px] font-bold text-white tracking-tight mb-3.5">
-                  Explore
-                </h4>
-                <ul className="space-y-2.5 text-[14px] text-white/80 font-normal">
-                  <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-                  <li><Link href="/shop" className="hover:text-white transition-colors">Shop All</Link></li>
-                  <li><Link href="/cleaning" className="hover:text-white transition-colors">Cleaning</Link></li>
-                  <li><Link href="/food-service" className="text-white font-medium hover:text-white transition-colors">Food Service</Link></li>
-                  <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                </ul>
-              </div>
-
-              {/* Support */}
-              <div>
-                <h4 className="font-serif text-[18px] sm:text-[20px] font-bold text-white tracking-tight mb-3.5">
-                  Support
-                </h4>
-                <ul className="space-y-2.5 text-[14px] text-white/80 font-normal">
-                  <li><Link href="/contact#faq" className="hover:text-white transition-colors">FAQ</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors">Delivery</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors">Returns</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors">Terms &amp; Conditions</Link></li>
-                </ul>
-              </div>
+            {/* Column 4: Support (2 cols) */}
+            <div className="lg:col-span-2">
+              <h4 className="font-serif text-base sm:text-lg font-medium text-white mb-3.5">
+                Support
+              </h4>
+              <ul className="space-y-2 text-xs text-white/75">
+                <li><Link href="/contact" className="hover:text-white transition-colors">Track Your Order</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Shipping &amp; Delivery</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Returns &amp; Refunds</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">FAQs</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Terms &amp; Conditions</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              </ul>
             </div>
           </div>
 
-          {/* Full-width Divider Line */}
-          <div className="border-t border-white/15 mt-10 mb-6" />
+          {/* Bottom divider and copyright line */}
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/70">
+            <p>&copy; 2024 Hygiene Innovations. All rights reserved.</p>
+            <p>Professional essentials. Everyday clean.</p>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
-          {/* Bottom Bar: Copyright & Social Icons */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-[13.5px] text-white/70 font-normal">
-              &copy; 2026 Hygiene Innovations. All rights reserved.
-            </p>
+  // Dedicated Blueprint Footer for Food Service Page (Exact 1:1 match to Food Service Reference Blueprint)
+  if (pathname === '/food-service') {
+    return (
+      <footer className="relative bg-[#022320] text-white py-14 sm:py-16 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 lg:gap-8">
+            {/* Left: Brand Logo & Tagline */}
+            <div className="space-y-4">
+              <Logo variant="light" />
+              <div className="text-[11px] font-bold tracking-[0.22em] text-white/90 uppercase leading-snug">
+                CLEANER SPACES.<br />
+                BRIGHTER TOMORROWS.
+              </div>
+            </div>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-5 text-white/85">
-              {/* Instagram */}
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="hover:text-[#EF6F69] transition-colors"
-              >
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none" />
-                </svg>
-              </a>
+            {/* Middle-Left: Vertical List of Links */}
+            <div>
+              <ul className="space-y-2 text-[13.5px] text-white/80 font-normal">
+                <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
+                <li><Link href="/shop" className="hover:text-white transition-colors">Shop All</Link></li>
+                <li><Link href="/cleaning" className="hover:text-white transition-colors">Cleaning</Link></li>
+                <li><Link href="/food-service" className="text-white font-medium hover:text-white transition-colors">Food Service</Link></li>
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+              </ul>
+            </div>
 
-              {/* LinkedIn */}
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="hover:text-[#EF6F69] transition-colors"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5H0v16h5V8zm7.982 0H8.014v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0V24H24V13.869c0-7.88-8.922-7.593-11.018-3.714V8z" />
-                </svg>
-              </a>
+            {/* Thin Vertical Divider (Desktop) & Statement */}
+            <div className="flex items-center gap-8 lg:gap-10">
+              <div className="hidden lg:block w-[1px] h-20 bg-white/20 shrink-0" />
+              <p className="font-serif text-[17px] sm:text-[19px] text-white/90 italic max-w-[340px] leading-relaxed">
+                Quality products for cleaner, healthier environments.
+              </p>
+            </div>
 
-              {/* YouTube */}
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="YouTube"
-                className="hover:text-[#EF6F69] transition-colors"
-              >
-                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-              </a>
+            {/* Far Right: Fine-line Leaf Illustration */}
+            <div className="relative w-28 h-28 sm:w-32 sm:h-32 shrink-0 opacity-80 self-start lg:self-center">
+              <Image
+                src="/images/fs_footer_leaf_transparent.webp"
+                alt="Botanical leaf illustration"
+                fill
+                className="object-contain"
+              />
             </div>
           </div>
         </div>

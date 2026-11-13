@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Send, CheckCircle2, Building, ShieldCheck, Mail, Phone } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Send, CheckCircle2, Building, ShieldCheck, Mail, Phone, Sparkles } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
 export function EnquiryModal() {
   const { isEnquiryOpen, closeEnquiry, enquirySubject } = useCart();
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -21,10 +23,11 @@ export function EnquiryModal() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
     setTimeout(() => {
-      // Keep visible
-    }, 500);
+      setLoading(false);
+      setSubmitted(true);
+    }, 600);
   };
 
   const handleClose = () => {
@@ -33,161 +36,163 @@ export function EnquiryModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div 
-        onClick={handleClose}
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity" 
-      />
-
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden p-6 sm:p-8 animate-in fade-in zoom-in-95 duration-200">
-          <button
+    <AnimatePresence>
+      {isEnquiryOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors z-10"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            className="fixed inset-0 bg-[#021A1D]/70 backdrop-blur-md transition-opacity"
+          />
 
-          {!submitted ? (
-            <div>
-              <div className="mb-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#023E46]">
-                  CORPORATE & BULK ORDERS
-                </span>
-                <h3 className="text-xl font-extrabold text-slate-900 mt-1">
-                  Request a Business Quote
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Outfit your workplace, hotel, catering kitchen or facility with wholesale pricing.
-                </p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-3.5">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Your Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Tariq Mansoor"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Company / Organization</label>
-                    <input
-                      type="text"
-                      value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      placeholder="e.g. Jumeirah Hospitality Group"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46]"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="tariq@hospitality.ae"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Phone Number *</label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+971 50 234 5678"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46]"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Location / Country</label>
-                    <select
-                      value={formData.country}
-                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46] bg-white"
-                    >
-                      <option value="United Arab Emirates">United Arab Emirates</option>
-                      <option value="Saudi Arabia">Saudi Arabia</option>
-                      <option value="Qatar">Qatar</option>
-                      <option value="Kuwait">Kuwait</option>
-                      <option value="Bahrain">Bahrain</option>
-                      <option value="Oman">Oman</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Interest Category</label>
-                    <input
-                      type="text"
-                      value={formData.category}
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      placeholder="e.g. Wrapmaster Dispenser supply"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46]"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Estimated Quantities & Specific Requirements</label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell us about the number of locations, monthly supply estimates, or delivery schedule needed..."
-                    className="w-full px-3.5 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#023E46]"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3.5 rounded-xl bg-[#023E46] hover:bg-[#084D57] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 active:scale-98"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Submit Corporate Enquiry</span>
-                </button>
-
-                <p className="text-[11px] text-center text-slate-400">
-                  Our B2B key account team replies within 4 business hours with customized tiered pricing.
-                </p>
-              </form>
-            </div>
-          ) : (
-            <div className="py-8 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4 animate-bounce">
-                <CheckCircle2 className="w-10 h-10" />
-              </div>
-              <h3 className="text-xl font-extrabold text-slate-900 mb-1">Enquiry Received!</h3>
-              <p className="text-xs text-slate-600 max-w-sm mb-6">
-                Thank you, <span className="font-bold">{formData.name}</span>. A dedicated commercial hygiene specialist will review your request and contact you at <span className="font-bold text-[#023E46]">{formData.email}</span> with wholesale pricing.
-              </p>
+          <div className="flex min-h-full items-center justify-center p-4 sm:p-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 16 }}
+              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden p-6 sm:p-8 border border-[#EAE3D6]"
+            >
               <button
                 onClick={handleClose}
-                className="px-6 py-2.5 rounded-xl bg-[#023E46] text-white text-xs font-bold hover:bg-[#084D57] transition-all"
+                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors z-10 cursor-pointer"
+                aria-label="Close modal"
               >
-                Close
+                <X className="w-5 h-5" />
               </button>
-            </div>
-          )}
+
+              {!submitted ? (
+                <div>
+                  <div className="mb-5">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#FA7268] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>COMMERCIAL &amp; BULK SUPPLY</span>
+                    </span>
+                    <h3 className="font-serif text-2xl font-bold text-[#052C33] mt-1 tracking-tight">
+                      Request Business Outfitting Quote
+                    </h3>
+                    <p className="text-xs text-[#5C7276] mt-1">
+                      Our commercial supply specialists respond within 2 business hours across UAE &amp; GCC.
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[#475C60] font-semibold mb-1">Your Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder="Contact person"
+                          className="w-full p-2.5 rounded-xl border border-[#DED7CA] focus:border-[#023E46] outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[#475C60] font-semibold mb-1">Company / Facility *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.company}
+                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                          placeholder="Organization name"
+                          className="w-full p-2.5 rounded-xl border border-[#DED7CA] focus:border-[#023E46] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[#475C60] font-semibold mb-1">Email Address *</label>
+                        <input
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder="corporate@domain.ae"
+                          className="w-full p-2.5 rounded-xl border border-[#DED7CA] focus:border-[#023E46] outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[#475C60] font-semibold mb-1">Phone Number *</label>
+                        <input
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          placeholder="+971 50 123 4567"
+                          className="w-full p-2.5 rounded-xl border border-[#DED7CA] focus:border-[#023E46] outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[#475C60] font-semibold mb-1">Requirement Category</label>
+                      <input
+                        type="text"
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full p-2.5 rounded-xl border border-[#DED7CA] bg-[#FAF8F5] focus:border-[#023E46] outline-none font-medium"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[#475C60] font-semibold mb-1">Requirements &amp; Estimated Quantity *</label>
+                      <textarea
+                        required
+                        rows={3}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Please tell us which products, recurring volume, and delivery location you require..."
+                        className="w-full p-2.5 rounded-xl border border-[#DED7CA] focus:border-[#023E46] outline-none resize-none"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-3.5 rounded-xl bg-[#023E46] hover:bg-[#034F5C] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer active:scale-98"
+                    >
+                      {loading ? (
+                        <span>Submitting enquiry...</span>
+                      ) : (
+                        <>
+                          <span>Submit Commercial Request</span>
+                          <Send className="w-3.5 h-3.5 text-[#FA7268]" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <div className="py-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-2xl font-bold text-[#052C33]">
+                      Enquiry Submitted Successfully
+                    </h3>
+                    <p className="text-xs text-[#5C7276] mt-2 max-w-sm mx-auto leading-relaxed">
+                      Thank you, <span className="font-semibold text-[#052C33]">{formData.name}</span>. A dedicated commercial account manager will contact {formData.company} with wholesale pricing within 2 business hours.
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleClose}
+                    className="px-6 py-2.5 rounded-xl bg-[#023E46] text-white text-xs font-bold hover:bg-[#034F5C] transition-colors"
+                  >
+                    Close Window
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 }

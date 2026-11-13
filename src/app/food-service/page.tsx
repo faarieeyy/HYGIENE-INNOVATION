@@ -3,90 +3,78 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ShoppingCart, Check } from 'lucide-react';
-import { PRODUCTS, Product } from '@/data/products';
+import { motion } from 'framer-motion';
+import { ArrowRight, ShoppingCart, Check, ShieldCheck, Sparkles, Eye } from 'lucide-react';
+import { Product } from '@/data/products';
 import { useCart } from '@/context/CartContext';
+import { ThreeTiltCard } from '@/components/ThreeTiltCard';
+import { FloatingLeaves } from '@/components/FloatingLeaves';
+import { WindyLeaf } from '@/components/WindyLeaf';
 
 export default function FoodServicePage() {
-  const { addToCart, openCart, openEnquiry } = useCart();
+  const { addToCart, openCart, openEnquiry, setQuickViewProduct } = useCart();
   const [addedId, setAddedId] = useState<string | null>(null);
 
-  // 4 Featured food service products from blueprint
+  // 4 Featured products matching the Food Service blueprint
   const featuredProducts: Product[] = [
-    PRODUCTS.find((p) => p.id === 'prod-5') || {
-      id: 'prod-5',
-      name: 'Wrapmaster 4500 Dispenser',
+    {
+      id: 'fs-wrap-dispenser',
+      name: 'Wrap Dispenser',
       category: 'Food Service',
-      subtitle: 'The gold standard catering wrap dispenser',
+      subtitle: 'Professional catering wrap dispenser',
       price: 185,
-      originalPrice: 210,
-      image: '/foodservice/prod_wrapmaster_4500.webp',
+      image: '/images/fs_prod_wrap_dispenser.webp',
       color: 'White',
       size: '450 mm',
-      badge: 'Kitchen Standard',
       rating: 5.0,
-      reviewsCount: 215,
-      description: 'Effortless one-press cut with a concealed safety blade.',
-      features: ['Concealed blade system', 'Dishwasher-safe lid and base'],
-      isFeatured: true,
-      isFoodService: true,
+      reviewsCount: 120,
+      features: ['One-press cut system', 'Concealed safety blade', 'Dishwasher safe base'],
+      description: 'Effortless one-press cut with concealed safety blade. The gold standard in commercial catering.',
       inStock: true,
     },
-    PRODUCTS.find((p) => p.id === 'prod-6') || {
-      id: 'prod-6',
-      name: 'Cling Film, Foil & Parchment',
+    {
+      id: 'fs-cling-foil-parchment',
+      name: 'Cling Film, Foil & Baking Parchment',
       category: 'Food Service',
-      subtitle: 'High-cling food service grade preservation wrap',
+      subtitle: 'Commercial catering preservation rolls',
       price: 65,
-      originalPrice: 75,
-      image: '/foodservice/prod_rolls.webp',
-      color: 'Clear',
+      image: '/images/fs_prod_rolls.webp',
+      color: 'Clear / Silver',
       size: '450 mm x 300 m',
-      badge: 'HACCP Compliant',
       rating: 4.9,
-      reviewsCount: 173,
-      description: 'Food-grade preservation wrap that seals in freshness.',
-      features: ['Moisture-locking membrane', 'Freezer-safe'],
-      isFeatured: true,
-      isFoodService: true,
+      reviewsCount: 95,
+      features: ['Moisture-locking barrier', 'Freezer & heat safe', 'HACCP certified'],
+      description: 'Food-grade preservation wrap that seals in freshness across high-temperature kitchens.',
       inStock: true,
     },
-    PRODUCTS.find((p) => p.id === 'prod-7') || {
-      id: 'prod-7',
+    {
+      id: 'fs-disposable-chef-hats',
       name: 'Disposable Chef Hats',
       category: 'Food Service',
-      subtitle: 'Pleated non-woven chef caps',
+      subtitle: 'Pleated white chef headwear',
       price: 42,
-      originalPrice: 50,
-      image: '/foodservice/prod_hats.webp',
-      color: 'Black',
-      size: 'Box of 50 pcs',
-      badge: 'Food Safe',
+      image: '/images/fs_prod_chef_hats.webp',
+      color: 'White',
+      size: 'Pack of 50',
       rating: 4.8,
-      reviewsCount: 89,
-      description: 'Maintain a pristine, professional appearance in the kitchen.',
-      features: ['Breathable pleated crown', 'Adjustable adhesive'],
-      isFeatured: true,
-      isFoodService: true,
+      reviewsCount: 64,
+      features: ['Breathable pleated crown', 'Adjustable headband', 'Sweat-wicking liner'],
+      description: 'Maintain a pristine, professional appearance and strict hygiene standards in the kitchen.',
       inStock: true,
     },
-    PRODUCTS.find((p) => p.id === 'prod-8') || {
-      id: 'prod-8',
-      name: 'Wrapmaster Refills',
+    {
+      id: 'fs-wrap-dispenser-refills',
+      name: 'Wrap Dispenser Refills',
       category: 'Food Service',
-      subtitle: 'Genuine heavy-duty replacement rolls',
+      subtitle: 'Heavy-duty catering refill rolls',
       price: 89,
-      originalPrice: 105,
-      image: '/foodservice/prod_refills.webp',
-      color: 'Clear / Silver',
+      image: '/images/fs_prod_refills.webp',
+      color: 'Clear',
       size: 'Pack of 3 Rolls',
-      badge: 'Genuine Refill',
       rating: 4.9,
-      reviewsCount: 112,
-      description: 'Genuine high-performance refill rolls for Wrapmaster.',
-      features: ['Snug fit core pins', 'Anti-static formulation'],
-      isFeatured: true,
-      isFoodService: true,
+      reviewsCount: 88,
+      features: ['Snug fit core pins', 'Anti-static formulation', 'Tangle-free dispensing'],
+      description: 'Genuine high-performance refill rolls engineered specifically for Wrapmaster units.',
       inStock: true,
     },
   ];
@@ -99,248 +87,337 @@ export default function FoodServicePage() {
   };
 
   return (
-    <div className="bg-[#FAF7F2] text-[#0A2624] min-h-screen">
+    <div className="bg-[#FAF7F2] text-[#0A2624] min-h-screen overflow-x-hidden">
       {/* ========================================================= */}
-      {/* SECTION 1: HERO (Image 2 Blueprint)                       */}
       {/* ========================================================= */}
-      <section className="relative bg-[#012823] text-white overflow-hidden">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[480px] lg:min-h-[520px]">
-            {/* Left Content Column */}
-            <div className="lg:col-span-6 px-6 sm:px-10 lg:px-12 py-14 sm:py-16 lg:py-20 z-10">
-              <h1 className="font-serif text-[42px] sm:text-[54px] lg:text-[64px] font-bold text-white tracking-tight leading-[1.08] mb-5">
+      {/* SECTION 2: HERO - Full-Bleed Exact Reference Background   */}
+      {/* ========================================================= */}
+      <section className="relative w-full bg-[#120404] text-white overflow-hidden min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] xl:min-h-[580px] flex items-center">
+        {/* Full-width dark professional kitchen background image served unoptimized */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <Image
+            src="/images/food_service_hero_exact_bg.jpg"
+            alt="Professional chef preparing culinary presentations with commercial wrap dispenser"
+            fill
+            priority
+            unoptimized
+            className="object-cover object-right lg:object-right w-full h-full"
+          />
+          {/* Dark gradient overlay on the left for crisp text contrast while keeping right-side imagery vibrant */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-transparent w-full md:w-[65%] lg:w-[52%] pointer-events-none" />
+          <div className="absolute inset-0 bg-black/15 pointer-events-none" />
+
+          {/* Subtle bottom edge blend with reduced height and opacity */}
+          <div className="absolute bottom-0 inset-x-0 h-10 sm:h-14 lg:h-16 bg-gradient-to-t from-[#FAF7F2] via-[#FAF7F2]/25 to-transparent pointer-events-none" />
+        </div>
+
+        {/* Ambient floating leaves with gentle windy drift (Red, Green, Light Beige) */}
+        <FloatingLeaves colors={['red', 'green', 'beige']} preset="hero" opacity={0.82} />
+
+        {/* Red / Coral botanical accent at bottom-left */}
+        <WindyLeaf color="coral" position="bottom-left" size="sm" opacity={0.65} />
+
+        {/* Content aligned to the left with smooth entrance motion */}
+        <div className="relative z-10 max-w-[1440px] mx-auto w-full px-6 sm:px-10 lg:px-12 py-12 sm:py-16 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-7 xl:col-span-6 max-w-xl"
+            >
+              {/* Category Eyebrow */}
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="w-2 h-2 rounded-full bg-[#FA7268] animate-pulse" />
+                <p className="text-[11.5px] sm:text-[12.5px] font-bold tracking-[0.24em] text-[#FA7268] uppercase">
+                  FOOD SERVICE &amp; CATERING ESSENTIALS
+                </p>
+              </div>
+
+              <h1 className="font-serif text-[42px] sm:text-[54px] lg:text-[64px] font-bold text-white tracking-tight leading-[1.08] mb-4">
                 Ready for<br />
                 every service.
               </h1>
 
-              <p className="text-white/85 text-[16px] sm:text-[18px] font-normal leading-relaxed mb-8 max-w-[460px]">
-                Food prep and presentation essentials for busy kitchens and hospitality teams.
+              <p className="text-white/90 text-[15.5px] sm:text-[17.5px] font-normal leading-relaxed mb-7 max-w-[490px]">
+                Food prep and presentation essentials for busy kitchens and hospitality teams across the UAE.
               </p>
 
-              <div className="pt-1">
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-4 mb-7">
                 <a
-                  href="#kitchen-essentials"
-                  className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#FB826D] hover:bg-[#FA725B] text-[#111827] text-[15px] font-semibold transition-all duration-200 shadow-md active:scale-95 group"
+                  href="#featured-products"
+                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#FA7268] hover:bg-[#F25C51] text-white text-[14.5px] font-semibold transition-all duration-200 shadow-lg active:scale-95 group"
                 >
                   <span>Explore food service</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </a>
-              </div>
-            </div>
 
-            {/* Right Chef Photo Column */}
-            <div className="lg:col-span-6 relative w-full h-[360px] sm:h-[440px] lg:h-[520px] overflow-hidden">
-              <Image
-                src="/foodservice/hero_chef_clean.webp"
-                alt="Chef in commercial kitchen using Wrapmaster cling film dispenser"
-                fill
-                priority
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              {/* Seamless blend gradient on left */}
-              <div className="hidden lg:block absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#012823] to-transparent pointer-events-none" />
-              {/* Subtle bottom fade */}
-              <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#012823]/60 to-transparent pointer-events-none" />
-            </div>
+                <button
+                  onClick={() => openEnquiry('Food Service Commercial Outfitting')}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-[14px] font-semibold transition-all backdrop-blur-xs cursor-pointer"
+                >
+                  <span>Commercial Quote</span>
+                </button>
+              </div>
+
+              {/* Quality Checklist */}
+              <div className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] text-white/80 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-[#FA7268]" /> Official Wrapmaster® Partner
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-[#FA7268]" /> Food-Grade Certified
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Check className="w-4 h-4 text-[#FA7268]" /> HACCP &amp; EFST Compliant
+                </span>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* ========================================================= */}
-      {/* SECTION 2: 3 USE CASES (Image 3 Blueprint)                */}
+      {/* SECTION 3: THREE BENEFIT CARDS (3D Perspective Elevation) */}
       {/* ========================================================= */}
-      <section className="bg-[#FAF7F2] py-16 sm:py-20 lg:py-24">
+      <section className="bg-[#FAF7F2] py-14 sm:py-20">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-            {/* Card 1: Prepare. */}
-            <div className="flex flex-col">
-              <div className="relative aspect-[16/10] w-full overflow-hidden shadow-xs">
-                <Image
-                  src="/foodservice/uc_prepare.webp"
-                  alt="Prepare - Commercial kitchen chef slicing fresh vegetables"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <h2 className="font-serif text-[28px] sm:text-[34px] font-bold text-[#0A2624] tracking-tight mt-6 mb-2">
-                Prepare.
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {/* Card 1: Prepare. (Left Perspective Tilt) */}
+            <motion.div
+              initial={{ opacity: 0, x: -40, rotateY: 10 }}
+              whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full"
+            >
+              <ThreeTiltCard maxTilt={5} scale={1.015} className="h-full">
+                <div className="flex flex-col h-full rounded-2xl overflow-hidden bg-white/40 p-2 sm:p-3 border border-[#EBE5DB] shadow-xs hover:shadow-lg transition-all duration-300">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#EDE7DC]">
+                    <Image
+                      src="/images/fs_card_prepare.webp"
+                      alt="Prepare - Kitchen chef slicing fresh ingredients"
+                      fill
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-3 pt-4">
+                    <h2 className="font-serif text-[26px] sm:text-[30px] font-bold text-[#0A2624] tracking-tight mb-2">
+                      Prepare.
+                    </h2>
+                    <p className="text-[#3A4D4B] text-[15px] sm:text-[16px] leading-relaxed">
+                      Keep ingredients fresh and work efficiently from prep to plate.
+                    </p>
+                  </div>
+                </div>
+              </ThreeTiltCard>
+            </motion.div>
+
+            {/* Card 2: Wrap & store. (Center Spring Lift) */}
+            <motion.div
+              initial={{ opacity: 0, y: 45, scale: 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.8, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full"
+            >
+              <ThreeTiltCard maxTilt={5} scale={1.015} className="h-full">
+                <div className="flex flex-col h-full rounded-2xl overflow-hidden bg-white/40 p-2 sm:p-3 border border-[#EBE5DB] shadow-xs hover:shadow-lg transition-all duration-300">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#EDE7DC]">
+                    <Image
+                      src="/images/fs_card_wrap_store.webp"
+                      alt="Wrap and store - Wrap dispenser on food container"
+                      fill
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-3 pt-4">
+                    <h2 className="font-serif text-[26px] sm:text-[30px] font-bold text-[#0A2624] tracking-tight mb-2">
+                      Wrap &amp; store.
+                    </h2>
+                    <p className="text-[#3A4D4B] text-[15px] sm:text-[16px] leading-relaxed">
+                      Reliable solutions to protect food quality and reduce waste.
+                    </p>
+                  </div>
+                </div>
+              </ThreeTiltCard>
+            </motion.div>
+
+            {/* Card 3: Serve with confidence. (Right Perspective Tilt) */}
+            <motion.div
+              initial={{ opacity: 0, x: 40, rotateY: -10 }}
+              whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.8, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full"
+            >
+              <ThreeTiltCard maxTilt={5} scale={1.015} className="h-full">
+                <div className="flex flex-col h-full rounded-2xl overflow-hidden bg-white/40 p-2 sm:p-3 border border-[#EBE5DB] shadow-xs hover:shadow-lg transition-all duration-300">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#EDE7DC]">
+                    <Image
+                      src="/images/fs_card_serve.webp"
+                      alt="Serve with confidence - Plating gourmet food presentation"
+                      fill
+                      className="object-cover transition-transform duration-700 ease-out hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-3 pt-4">
+                    <h2 className="font-serif text-[26px] sm:text-[30px] font-bold text-[#0A2624] tracking-tight mb-2">
+                      Serve with confidence.
+                    </h2>
+                    <p className="text-[#3A4D4B] text-[15px] sm:text-[16px] leading-relaxed">
+                      From kitchen to customer, present food at its best.
+                    </p>
+                  </div>
+                </div>
+              </ThreeTiltCard>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* SECTION 4: WRAP DISPENSER FEATURE                         */}
+      {/* ========================================================= */}
+      <section className="relative w-full bg-[#031A18] text-white overflow-hidden py-16 sm:py-20 lg:py-24">
+        {/* Wide kitchen image background showing wrap dispenser and roll on counter */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/food_service_wrap_banner.webp"
+            alt="Professional wrap dispenser and roll on commercial kitchen counter"
+            fill
+            unoptimized
+            className="object-cover object-right lg:object-center"
+          />
+          {/* Darkened left side for readable text */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#031A18] via-[#031A18]/90 to-transparent w-full md:w-[65%] lg:w-[50%]" />
+          <div className="absolute inset-0 bg-black/15" />
+
+          {/* Subtle top edge blend */}
+          <div className="absolute top-0 inset-x-0 h-8 sm:h-12 bg-gradient-to-b from-[#FAF7F2]/60 via-[#FAF7F2]/20 to-transparent pointer-events-none" />
+
+          {/* Subtle bottom edge blend */}
+          <div className="absolute bottom-0 inset-x-0 h-8 sm:h-12 bg-gradient-to-t from-[#FAF7F2]/60 via-[#FAF7F2]/20 to-transparent pointer-events-none" />
+        </div>
+
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
+          <div className="max-w-xl space-y-6">
+            <div>
+              <h2 className="font-serif text-[36px] sm:text-[46px] lg:text-[52px] font-bold text-white tracking-tight leading-[1.08] mb-3">
+                A better way<br />
+                to wrap.
               </h2>
-              <p className="text-[#3A4D4B] text-[15px] sm:text-[16px] leading-relaxed max-w-[360px]">
-                Keep ingredients fresh and work efficiently from prep to plate.
+              <p className="text-white/80 text-[15.5px] sm:text-[16.5px] leading-relaxed max-w-[430px]">
+                A practical, professional wrap dispenser designed for busy kitchens.
               </p>
             </div>
 
-            {/* Card 2: Wrap & store. */}
-            <div className="flex flex-col">
-              <div className="relative aspect-[16/10] w-full overflow-hidden shadow-xs">
-                <Image
-                  src="/foodservice/uc_wrap_store.webp"
-                  alt="Wrap and store - Wrapmaster dispenser sealing fresh salad pan"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
+            {/* 4 Vertically stacked feature rows with small gold line icons */}
+            <div className="space-y-4 pt-2">
+              {/* Row 1: One-press cut */}
+              <div className="flex items-center gap-4 group">
+                <div className="relative w-11 h-11 shrink-0 transition-transform group-hover:scale-110">
+                  <Image
+                    src="/images/fs_icon_one_press.webp"
+                    alt="One-press cut"
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-[15.5px] leading-snug">One-press cut</h3>
+                  <p className="text-white/70 text-[13.5px]">for quick, easy use.</p>
+                </div>
               </div>
-              <h2 className="font-serif text-[28px] sm:text-[34px] font-bold text-[#0A2624] tracking-tight mt-6 mb-2">
-                Wrap &amp; store.
-              </h2>
-              <p className="text-[#3A4D4B] text-[15px] sm:text-[16px] leading-relaxed max-w-[360px]">
-                Practical options for protecting prepared ingredients.
-              </p>
-            </div>
 
-            {/* Card 3: Serve with confidence. */}
-            <div className="flex flex-col">
-              <div className="relative aspect-[16/10] w-full overflow-hidden shadow-xs">
-                <Image
-                  src="/foodservice/uc_serve.webp"
-                  alt="Serve with confidence - Chef garnishing gourmet dish with microgreens"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
+              {/* Row 2: Concealed blade */}
+              <div className="flex items-center gap-4 group">
+                <div className="relative w-11 h-11 shrink-0 transition-transform group-hover:scale-110">
+                  <Image
+                    src="/images/fs_icon_concealed_blade.webp"
+                    alt="Concealed blade"
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-[15.5px] leading-snug">Concealed blade</h3>
+                  <p className="text-white/70 text-[13.5px]">for safer handling.</p>
+                </div>
               </div>
-              <h2 className="font-serif text-[28px] sm:text-[34px] font-bold text-[#0A2624] tracking-tight mt-6 mb-2">
-                Serve with confidence.
-              </h2>
-              <p className="text-[#3A4D4B] text-[15px] sm:text-[16px] leading-relaxed max-w-[360px]">
-                Food-service essentials for a polished kitchen routine.
-              </p>
+
+              {/* Row 3: Dishwasher-safe lid and base */}
+              <div className="flex items-center gap-4 group">
+                <div className="relative w-11 h-11 shrink-0 transition-transform group-hover:scale-110">
+                  <Image
+                    src="/images/fs_icon_dishwasher_safe.webp"
+                    alt="Dishwasher-safe lid and base"
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-[15.5px] leading-snug">Dishwasher-safe lid and base</h3>
+                  <p className="text-white/70 text-[13.5px]">for effortless cleaning.</p>
+                </div>
+              </div>
+
+              {/* Row 4: Portable */}
+              <div className="flex items-center gap-4 group">
+                <div className="relative w-11 h-11 shrink-0 transition-transform group-hover:scale-110">
+                  <Image
+                    src="/images/fs_icon_portable.webp"
+                    alt="Portable"
+                    width={44}
+                    height={44}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-[15.5px] leading-snug">Portable</h3>
+                  <p className="text-white/70 text-[13.5px]">for flexible use across the kitchen.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================= */}
-      {/* SECTION 3: WRAPMASTER SPOTLIGHT (Image 4 Blueprint)       */}
+      {/* SECTION 5: CHEF HATS FEATURE                              */}
       {/* ========================================================= */}
-      <section className="relative bg-[#012823] text-white overflow-hidden py-14 sm:py-20 lg:py-24">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-12">
-            {/* Left Content Column */}
-            <div className="lg:col-span-5 space-y-6">
-              <div>
-                <h2 className="font-serif text-[38px] sm:text-[48px] lg:text-[54px] font-bold text-white tracking-tight leading-[1.08] mb-3">
-                  A better way<br />
-                  to wrap.
-                </h2>
-                <p className="text-white/80 text-[15.5px] sm:text-[16.5px] leading-relaxed max-w-[420px]">
-                  A practical, professional wrap dispenser designed for busy kitchens.
-                </p>
-              </div>
-
-              {/* 4 Feature Items with Blueprint Circular Icons */}
-              <div className="space-y-4 pt-2">
-                {/* Feature 1 */}
-                <div className="flex items-center gap-4">
-                  <div className="relative w-12 h-12 shrink-0">
-                    <Image
-                      src="/foodservice/icon_press.webp"
-                      alt="One-press cut"
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-[16px] leading-snug">One-press cut</h3>
-                    <p className="text-white/70 text-[13.5px]">For quick, easy use.</p>
-                  </div>
-                </div>
-
-                {/* Feature 2 */}
-                <div className="flex items-center gap-4">
-                  <div className="relative w-12 h-12 shrink-0">
-                    <Image
-                      src="/foodservice/icon_blade.webp"
-                      alt="Concealed blade"
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-[16px] leading-snug">Concealed blade</h3>
-                    <p className="text-white/70 text-[13.5px]">For safer cutting.</p>
-                  </div>
-                </div>
-
-                {/* Feature 3 */}
-                <div className="flex items-center gap-4">
-                  <div className="relative w-12 h-12 shrink-0">
-                    <Image
-                      src="/foodservice/icon_dishwasher.webp"
-                      alt="Dishwasher-safe lid and base"
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-[16px] leading-snug">Dishwasher-safe lid and base</h3>
-                    <p className="text-white/70 text-[13.5px]">for effortless cleaning.</p>
-                  </div>
-                </div>
-
-                {/* Feature 4 */}
-                <div className="flex items-center gap-4">
-                  <div className="relative w-12 h-12 shrink-0">
-                    <Image
-                      src="/foodservice/icon_portable.webp"
-                      alt="Portable"
-                      width={48}
-                      height={48}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-[16px] leading-snug">Portable</h3>
-                    <p className="text-white/70 text-[13.5px]">for flexible use across the kitchen.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Product In-Action Image */}
-            <div className="lg:col-span-7 relative w-full h-[320px] sm:h-[420px] lg:h-[460px] overflow-hidden rounded-2xl shadow-xl">
-              <Image
-                src="/foodservice/wrapmaster_scene.webp"
-                alt="Wrapmaster 4500 Dispenser wrapping fresh vegetables in hotel kitchen"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 58vw"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================= */}
-      {/* SECTION 4: CHEF HATS (Image 1 Blueprint)                  */}
-      {/* ========================================================= */}
-      <section className="bg-[#FAF7F2] py-16 sm:py-20 lg:py-24 border-b border-[#EFE9DF]">
+      <section className="bg-[#FAF7F2] py-14 sm:py-18 lg:py-20">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-14">
-            {/* Left Photo of White Chef Hats */}
-            <div className="lg:col-span-6 relative aspect-[16/10] w-full overflow-hidden rounded-xl shadow-xs">
-              <Image
-                src="/foodservice/chef_hats_photo.webp"
-                alt="Pleated white disposable chef hats resting on stainless steel prep counter"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+            {/* Left Photo of Disposable Chef Hats with 3D Depth */}
+            <div className="lg:col-span-6">
+              <ThreeTiltCard maxTilt={5} scale={1.015}>
+                <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl shadow-sm border border-[#EAE3D6]">
+                  <Image
+                    src="/images/fs_chef_hats_photo.webp"
+                    alt="Disposable chef hats resting on prep counter"
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              </ThreeTiltCard>
             </div>
 
-            {/* Right Content */}
+            {/* Right: Warm Off-white Text Panel */}
             <div className="lg:col-span-6 space-y-4">
-              <h2 className="font-serif text-[36px] sm:text-[46px] lg:text-[52px] font-bold text-[#0A2624] tracking-tight leading-[1.12]">
+              <h2 className="font-serif text-[34px] sm:text-[44px] lg:text-[48px] font-bold text-[#0A2624] tracking-tight leading-[1.12]">
                 A polished finish<br />
                 for every shift.
               </h2>
-              <p className="text-[#3A4D4B] text-[16px] sm:text-[17px] leading-relaxed max-w-[500px]">
+              <p className="text-[#3A4D4B] text-[15.5px] sm:text-[16.5px] leading-relaxed max-w-[500px]">
                 Disposable chef hats help maintain a professional appearance and support a clean, hygienic kitchen environment.
               </p>
             </div>
@@ -349,81 +426,86 @@ export default function FoodServicePage() {
       </section>
 
       {/* ========================================================= */}
-      {/* SECTION 5: FEATURED PRODUCTS (Image 5 Blueprint)          */}
+      {/* SECTION 6: FEATURED PRODUCTS                              */}
       {/* ========================================================= */}
-      <section id="kitchen-essentials" className="bg-[#FAF7F2] py-16 sm:py-20 lg:py-24 scroll-mt-20">
+      <section id="featured-products" className="bg-[#FAF7F2] py-16 sm:py-20 scroll-mt-20">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
           {/* Section Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 sm:mb-12">
-            <div>
-              <span className="text-[#FA7C6B] text-[11px] font-bold tracking-[0.25em] uppercase block mb-1">
-                FEATURED PRODUCTS
-              </span>
-              <h2 className="font-serif text-[36px] sm:text-[44px] font-bold text-[#0A2624] tracking-tight">
-                Kitchen essentials<span className="text-[#FA7C6B]">.</span>
-              </h2>
-            </div>
+          <div className="flex items-center justify-between mb-8 sm:mb-10">
+            <h2 className="font-serif text-[32px] sm:text-[40px] font-bold text-[#0A2624] tracking-tight">
+              Featured products<span className="text-[#FA7268]">.</span>
+            </h2>
 
             <Link
               href="/shop?category=Food%20Service"
-              className="inline-flex items-center gap-1.5 text-[14px] font-bold text-[#0A2624] hover:text-[#FA7C6B] transition-colors group"
+              className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#FA7268] hover:text-[#F25C51] transition-colors group"
             >
               <span>View all food service</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* 4 Cards Grid */}
+          {/* 4 Product Cards in One Row with 3D Tilt */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => {
               const isAdded = addedId === product.id;
               return (
-                <div
-                  key={product.id}
-                  className="group flex flex-col justify-between bg-white rounded-2xl border border-[#EAE3D4] p-5 shadow-2xs hover:shadow-md hover:border-[#D6CBBA] transition-all duration-200"
-                >
-                  <div>
-                    {/* Product Image Container */}
-                    <div className="relative aspect-[4/3] w-full bg-[#FAF8F5] rounded-xl overflow-hidden mb-5">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      />
+                <ThreeTiltCard key={product.id} maxTilt={6} scale={1.02} className="h-full">
+                  <div className="bg-white rounded-2xl border border-[#ECE7DC] p-4 flex flex-col justify-between h-full shadow-2xs hover:shadow-xl transition-all duration-300 group">
+                    <div>
+                      {/* Product Image */}
+                      <div
+                        onClick={() => setQuickViewProduct(product)}
+                        className="relative aspect-[4/3] w-full bg-[#F6F4EE] rounded-xl overflow-hidden mb-4 cursor-pointer border border-[#EFEAE0]"
+                      >
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-contain p-3 group-hover:scale-106 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        />
+                        {/* Quick View overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                          <span className="px-3 py-1 rounded-full bg-white/95 text-[#052C33] text-[10.5px] font-bold shadow-md backdrop-blur-xs flex items-center gap-1">
+                            <Eye className="w-3 h-3 text-[#FA7268]" />
+                            <span>Quick View</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Product Name */}
+                      <h3
+                        onClick={() => setQuickViewProduct(product)}
+                        className="font-serif text-[16px] sm:text-[17px] font-bold text-[#0A2624] leading-snug tracking-tight mb-2 cursor-pointer hover:text-[#FA7268] transition-colors"
+                      >
+                        {product.name}
+                      </h3>
                     </div>
 
-                    {/* Product Title */}
-                    <h3 className="font-serif text-[17px] sm:text-[18px] font-bold text-[#0A2624] leading-snug tracking-tight mb-1 line-clamp-1">
-                      {product.name}
-                    </h3>
-
-                    {/* Price Line matching blueprint */}
-                    <p className="text-[14px] text-[#0A2624]/75 font-normal mb-5">
-                      AED —
-                    </p>
+                    {/* Price & Small Coral Outlined Cart Button */}
+                    <div className="flex items-center justify-between pt-3 mt-auto">
+                      <span className="text-[14.5px] text-[#0A2624] font-bold">
+                        AED {product.price}
+                      </span>
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        aria-label={`Add ${product.name} to cart`}
+                        className={`w-9 h-9 rounded-[6px] border border-[#FA7268] flex items-center justify-center transition-all duration-150 active:scale-95 cursor-pointer ${
+                          isAdded
+                            ? 'bg-[#FA7268] text-white shadow-xs'
+                            : 'text-[#FA7268] hover:bg-[#FA7268] hover:text-white'
+                        }`}
+                      >
+                        {isAdded ? (
+                          <Check className="w-4 h-4" />
+                        ) : (
+                          <ShoppingCart className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
-
-                  {/* Add to Cart Full-width Dark Teal Button */}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    className="w-full py-3 px-4 rounded-xl bg-[#05322F] hover:bg-[#07423E] text-white text-[13.5px] font-semibold flex items-center justify-center gap-2 transition-all duration-150 active:scale-[0.98] shadow-xs"
-                    aria-label={`Add ${product.name} to cart`}
-                  >
-                    {isAdded ? (
-                      <>
-                        <Check className="w-4 h-4 text-[#FB826D]" />
-                        <span>Added to cart</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="w-4 h-4" />
-                        <span>Add to cart</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                </ThreeTiltCard>
               );
             })}
           </div>
@@ -431,59 +513,70 @@ export default function FoodServicePage() {
       </section>
 
       {/* ========================================================= */}
-      {/* SECTION 6: BUSINESS CTA (Page 19 Blueprint)               */}
+      {/* SECTION 7: BUSINESS CALLOUT                               */}
       {/* ========================================================= */}
-      <section className="relative overflow-hidden bg-[#0E3836] text-white">
-        {/* Background Image: Inpainted clean banner with organic curve & chef scene */}
-        <div className="absolute inset-0">
-          <Image
-            src="/foodservice/cta_banner_clean.webp"
-            alt="Commercial kitchen chef using Wrapmaster dispenser"
-            fill
-            priority
-            className="object-cover object-right"
-            sizes="100vw"
-          />
-          {/* Subtle responsive gradient on smaller viewports */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0E3836] via-[#0E3836]/90 to-transparent lg:hidden" />
-        </div>
-
-        {/* Content Container */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12 py-16 sm:py-20 lg:py-24">
-          <div className="max-w-xl space-y-5 sm:space-y-6">
-            {/* Coral Eyebrow */}
-            <span className="text-[#FA7C6B] text-[11px] sm:text-[12px] font-bold tracking-[0.22em] uppercase block">
-              FOR PROFESSIONAL KITCHENS
-            </span>
-
-            {/* Serif Headline */}
-            <h2 className="font-serif text-[42px] sm:text-[54px] lg:text-[62px] font-bold text-white tracking-tight leading-[1.08]">
-              Built for<br />
-              busy kitchens.
-            </h2>
-
-            {/* Subtitle */}
-            <p className="text-white/85 text-[16px] sm:text-[17.5px] leading-relaxed max-w-[440px]">
-              Reliable food-service essentials,<br className="hidden sm:inline" />
-              ready for every shift.
-            </p>
-
-            {/* CTA Button: Cream Background with Dark Teal Text matching blueprint */}
-            <div className="pt-2">
-              <button
-                onClick={() => openEnquiry('Food Service Commercial Outfitting')}
-                className="inline-flex items-center gap-2.5 px-8 py-3.5 sm:py-4 rounded-xl bg-[#FAF7F2] hover:bg-white text-[#0A2624] text-[15px] font-bold transition-all duration-200 shadow-md active:scale-95 group"
-              >
-                <span>Talk to our team</span>
-                <ArrowRight className="w-4 h-4 text-[#0A2624] transition-transform group-hover:translate-x-1" />
-              </button>
+      <section className="bg-[#052C33] text-white py-14 sm:py-16">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+            {/* Left: Heading & Text */}
+            <div className="max-w-md space-y-2.5 text-center lg:text-left">
+              <h2 className="font-serif text-[32px] sm:text-[38px] font-bold text-white tracking-tight leading-tight">
+                Built for busy kitchens.
+              </h2>
+              <p className="text-white/80 text-[14.5px] sm:text-[15.5px] leading-relaxed">
+                Looking to equip your team or place a larger order? We’re here to help with tailored solutions for your business.
+              </p>
             </div>
 
-            {/* Spaced Footer Attributes */}
-            <div className="pt-4 sm:pt-6">
-              <p className="text-white/60 text-[11px] sm:text-[12px] font-semibold tracking-[0.25em] uppercase">
-                SUPPLY &bull; QUALITY &bull; SUPPORT
-              </p>
+            {/* Center: 3 Gold Icon-and-Label Rows */}
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-4 sm:gap-6 lg:gap-3.5">
+              {/* Business enquiries */}
+              <div
+                onClick={() => openEnquiry('Food Service Business Enquiries')}
+                className="flex items-center gap-3 text-[#D6B272] hover:text-[#E8CD96] transition-colors cursor-pointer"
+              >
+                <svg className="w-5 h-5 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="1.8">
+                  <rect x="4" y="2" width="16" height="20" rx="2" />
+                  <path d="M9 22v-4h6v4" />
+                  <path d="M8 6h.01M16 6h.01M12 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01" />
+                </svg>
+                <span className="text-[14.5px] font-medium text-white/90">Business enquiries</span>
+              </div>
+
+              {/* Bulk orders */}
+              <div
+                onClick={() => openEnquiry('Food Service Bulk Orders')}
+                className="flex items-center gap-3 text-[#D6B272] hover:text-[#E8CD96] transition-colors cursor-pointer"
+              >
+                <svg className="w-5 h-5 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="1.8">
+                  <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-8 0h6m4 0h2m-6 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0m-10 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                  <path d="M13 6h4l4 5v6h-4" />
+                </svg>
+                <span className="text-[14.5px] font-medium text-white/90">Bulk orders</span>
+              </div>
+
+              {/* Product support */}
+              <div
+                onClick={() => openEnquiry('Food Service Product Support')}
+                className="flex items-center gap-3 text-[#D6B272] hover:text-[#E8CD96] transition-colors cursor-pointer"
+              >
+                <svg className="w-5 h-5 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="1.8">
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+                  <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+                </svg>
+                <span className="text-[14.5px] font-medium text-white/90">Product support</span>
+              </div>
+            </div>
+
+            {/* Right: Coral Button */}
+            <div>
+              <button
+                onClick={() => openEnquiry('Food Service Team Contact')}
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-[6px] bg-[#FA7268] hover:bg-[#F25C51] text-white text-[14.5px] font-semibold transition-all duration-150 shadow-md active:scale-95 group cursor-pointer"
+              >
+                <span>Contact our team</span>
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
           </div>
         </div>

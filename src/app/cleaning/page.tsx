@@ -3,10 +3,14 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ShoppingCart, Sparkles, Layers, ShieldCheck, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, ShoppingCart, Sparkles, Layers, ShieldCheck, Check, CheckCircle2 } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { Product } from '@/data/products';
 import { ReassuranceStrip } from '@/components/ReassuranceStrip';
+import { ThreeTiltCard } from '@/components/ThreeTiltCard';
+import { FloatingLeaves } from '@/components/FloatingLeaves';
+import { WindyLeaf } from '@/components/WindyLeaf';
 
 const FEATURED_CLEANING_PRODUCTS: Product[] = [
   {
@@ -94,13 +98,41 @@ export default function CleaningPage() {
   return (
     <div className="bg-[#FCFBF9] text-[#052033] min-h-screen">
       {/* ========================================================= */}
-      {/* SECTION 1: HERO (Dark Pine Teal Backdrop)                */}
+      {/* SECTION 1: HERO (Dark Pine Teal Backdrop with Full Background) */}
       {/* ========================================================= */}
-      <section className="relative bg-[#013D38] overflow-hidden">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[460px] lg:min-h-[500px]">
-            {/* Left Content Column */}
-            <div className="lg:col-span-5 px-6 sm:px-10 lg:px-12 py-14 sm:py-16 lg:py-20 z-10">
+      <section className="w-full relative bg-[#02403D] bg-[radial-gradient(ellipse_70%_70%_at_70%_30%,rgba(214,178,114,0.18),rgba(2,64,61,1))] overflow-hidden min-h-[520px] sm:min-h-[580px] lg:min-h-[640px] flex items-center">
+        {/* Full Hero Background Image */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <Image
+            src="/images/cleaning-hero-banner.webp"
+            alt="Practical cleaning cloths and wipes for everyday spaces"
+            fill
+            priority
+            className="object-cover object-right w-full h-full"
+            sizes="100vw"
+          />
+          {/* Mobile & Tablet Gradient Overlay for optimal text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#02403D] via-[#02403D]/90 sm:via-[#02403D]/75 to-transparent lg:hidden pointer-events-none" />
+
+          {/* Subtle bottom blend melting into page body (#FCFBF9) */}
+          <div className="absolute bottom-0 inset-x-0 h-10 sm:h-14 lg:h-16 bg-gradient-to-t from-[#FCFBF9] via-[#FCFBF9]/25 to-transparent pointer-events-none" />
+        </div>
+
+        {/* Ambient floating leaves with gentle windy drift (Red, Green, Light Beige) */}
+        <FloatingLeaves colors={['red', 'green', 'beige']} preset="hero" opacity={0.82} />
+
+        {/* Botanical leaf at bottom left */}
+        <WindyLeaf color="green" position="bottom-left" size="md" opacity={0.7} />
+
+        {/* Hero Content aligned within container */}
+        <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 sm:px-10 lg:px-12 py-14 sm:py-16 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-8 max-w-[540px]"
+            >
               {/* Category Subhead with Coral Dash */}
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-8 h-[3px] bg-[#FA7268] inline-block" />
@@ -110,46 +142,74 @@ export default function CleaningPage() {
               </div>
 
               {/* Main Headline with Coral Dot */}
-              <h1 className="font-serif text-[38px] sm:text-[46px] lg:text-[54px] font-bold text-white tracking-tight leading-[1.12] mb-5">
+              <h1 className="font-serif text-[38px] sm:text-[48px] lg:text-[58px] font-bold text-white tracking-tight leading-[1.1] mb-5">
                 Make every clean count<span className="text-[#FA7268]">.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-white/85 text-[16px] sm:text-[17px] font-normal leading-relaxed mb-8 max-w-[440px]">
-                Practical cloths, wipes and cleaning essentials for everyday and professional spaces.
+              <p className="text-white/85 text-[16px] sm:text-[17.5px] font-normal leading-relaxed mb-8 max-w-[460px]">
+                Practical cloths, wipes and cleaning essentials for everyday and professional spaces across the UAE.
               </p>
 
-              {/* CTA Button */}
-              <div>
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap items-center gap-4 mb-7">
                 <Link
                   href="/shop?category=Cloths%20%26%20Wipes"
-                  className="inline-flex items-center gap-2.5 bg-[#FB826D] hover:bg-[#FA7268] text-[#012B26] font-semibold text-[15px] px-7 py-3.5 rounded-[3px] shadow-sm hover:shadow-md transition-all duration-200 group"
+                  className="inline-flex items-center gap-2.5 bg-[#FB826D] hover:bg-[#FA7268] text-[#012B26] font-semibold text-[15px] px-8 py-3.5 rounded-full shadow-md hover:shadow-lg transition-all duration-200 group active:scale-95"
                 >
                   <span>Shop cleaning essentials</span>
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
+                <Link
+                  href="/food-service"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-[14px] font-semibold transition-all backdrop-blur-xs"
+                >
+                  <span>Food Service Range</span>
+                </Link>
               </div>
-            </div>
 
-            {/* Right Lifestyle Image */}
-            <div className="lg:col-span-7 relative h-[320px] sm:h-[400px] lg:h-[500px] w-full">
-              <Image
-                src="/images/clean_hero_main.webp"
-                alt="Practical cleaning cloths and wipes for everyday spaces"
-                fill
-                priority
-                className="object-cover object-center lg:object-left"
-                sizes="(max-width: 1024px) 100vw, 58vw"
-              />
-              {/* Soft Gradient Mask for seamless blending on large screens */}
-              <div className="hidden lg:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#013D38] to-transparent pointer-events-none" />
+              {/* Reassurance Checklist */}
+              <div className="pt-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs sm:text-[13px] text-white/80 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#FA7268]" /> 80/20 Microfiber Split Fiber
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#FA7268]" /> Lint &amp; Streak-Free
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#FA7268]" /> Up to 300 Wash Cycles
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Right Side Floating Reassurance Card */}
+            <div className="hidden lg:flex lg:col-span-4 justify-end">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="p-5 rounded-2xl bg-white/[0.08] backdrop-blur-md border border-white/20 shadow-2xl max-w-xs space-y-3"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#FA7268]/20 border border-[#FA7268]/30 flex items-center justify-center text-[#FA7268]">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white leading-tight">Commercial Quality</p>
+                    <p className="text-[11px] text-white/70">Hotels, Offices &amp; Homes</p>
+                  </div>
+                </div>
+                <div className="border-t border-white/10 pt-2 text-[11.5px] text-white/80 leading-relaxed">
+                  Color-coded hygiene standards prevent cross-contamination across kitchens, washrooms, and general office desks.
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================= */}
-      {/* SECTION 2: CLEAN BY TASK (3 Grid Cards)                   */}
+      {/* SECTION 2: CLEAN BY TASK (3 Grid Cards with 3D Depth)     */}
       {/* ========================================================= */}
       <section className="py-16 sm:py-20 lg:py-24 bg-[#FCFBF9]">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-12">
@@ -171,82 +231,112 @@ export default function CleaningPage() {
             </p>
           </div>
 
-          {/* 3 Task Cards Grid */}
+          {/* 3 Task Cards Grid with ThreeTiltCard & Dynamic Upward Reveal */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
             {/* Card 1: Wipe & polish */}
-            <Link
-              href="/shop?category=Cloths%20%26%20Wipes"
-              className="group flex flex-col focus:outline-none"
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[3px] bg-[#EAE3D2]/40 mb-4 shadow-sm">
-                <Image
-                  src="/images/clean_task_wipe.webp"
-                  alt="Wipe and polish surfaces streak-free"
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <div className="flex items-center justify-between mt-1">
-                <h3 className="font-serif text-[22px] sm:text-[23px] font-bold text-[#052033] group-hover:text-[#013D38] transition-colors">
-                  Wipe &amp; polish
-                </h3>
-                <ArrowRight className="w-5 h-5 text-[#013D38] transition-transform duration-200 group-hover:translate-x-1.5" />
-              </div>
-              <p className="text-[#4A5D5A] text-[14.5px] mt-2 leading-relaxed font-normal">
-                Get a streak-free finish on surfaces around your space.
-              </p>
-            </Link>
+              <ThreeTiltCard maxTilt={5} scale={1.015} className="h-full">
+                <Link
+                  href="/shop?category=Cloths%20%26%20Wipes"
+                  className="group flex flex-col h-full p-3 rounded-2xl bg-white border border-[#EAE3D2] shadow-2xs hover:shadow-lg transition-all focus:outline-none"
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#EAE3D2]/40 mb-4 shadow-sm">
+                    <Image
+                      src="/images/cleaning-task-wipe-v2.webp"
+                      alt="Wipe and polish surfaces streak-free"
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between mt-1 px-1">
+                    <h3 className="font-serif text-[22px] sm:text-[23px] font-bold text-[#052033] group-hover:text-[#013D38] transition-colors">
+                      Wipe &amp; polish
+                    </h3>
+                    <ArrowRight className="w-5 h-5 text-[#013D38] transition-transform duration-200 group-hover:translate-x-1.5" />
+                  </div>
+                  <p className="text-[#4A5D5A] text-[14.5px] mt-2 px-1 leading-relaxed font-normal">
+                    Get a streak-free finish on surfaces around your space.
+                  </p>
+                </Link>
+              </ThreeTiltCard>
+            </motion.div>
 
             {/* Card 2: Tackle spills */}
-            <Link
-              href="/shop?category=Cloths%20%26%20Wipes"
-              className="group flex flex-col focus:outline-none"
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[3px] bg-[#EAE3D2]/40 mb-4 shadow-sm">
-                <Image
-                  src="/images/clean_task_spill.webp"
-                  alt="Tackle spills quickly and easily"
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <div className="flex items-center justify-between mt-1">
-                <h3 className="font-serif text-[22px] sm:text-[23px] font-bold text-[#052033] group-hover:text-[#013D38] transition-colors">
-                  Tackle spills
-                </h3>
-                <ArrowRight className="w-5 h-5 text-[#013D38] transition-transform duration-200 group-hover:translate-x-1.5" />
-              </div>
-              <p className="text-[#4A5D5A] text-[14.5px] mt-2 leading-relaxed font-normal">
-                Absorb and clean up messes quickly and easily.
-              </p>
-            </Link>
+              <ThreeTiltCard maxTilt={5} scale={1.015} className="h-full">
+                <Link
+                  href="/shop?category=Cloths%20%26%20Wipes"
+                  className="group flex flex-col h-full p-3 rounded-2xl bg-white border border-[#EAE3D2] shadow-2xs hover:shadow-lg transition-all focus:outline-none"
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#EAE3D2]/40 mb-4 shadow-sm">
+                    <Image
+                      src="/images/cleaning-task-spill-v2.webp"
+                      alt="Tackle spills quickly and easily"
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between mt-1 px-1">
+                    <h3 className="font-serif text-[22px] sm:text-[23px] font-bold text-[#052033] group-hover:text-[#013D38] transition-colors">
+                      Tackle spills
+                    </h3>
+                    <ArrowRight className="w-5 h-5 text-[#013D38] transition-transform duration-200 group-hover:translate-x-1.5" />
+                  </div>
+                  <p className="text-[#4A5D5A] text-[14.5px] mt-2 px-1 leading-relaxed font-normal">
+                    Absorb and clean up messes quickly and easily.
+                  </p>
+                </Link>
+              </ThreeTiltCard>
+            </motion.div>
 
-            {/* Card 3: Keep it stocked */}
-            <Link
-              href="/shop"
-              className="group flex flex-col focus:outline-none"
+            {/* Card 3: Stock up & refresh */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.75, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="h-full"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[3px] bg-[#EAE3D2]/40 mb-4 shadow-sm">
-                <Image
-                  src="/images/clean_task_stock.webp"
-                  alt="Keep spaces stocked with everyday cleaning cloths"
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <div className="flex items-center justify-between mt-1">
-                <h3 className="font-serif text-[22px] sm:text-[23px] font-bold text-[#052033] group-hover:text-[#013D38] transition-colors">
-                  Keep it stocked
-                </h3>
-                <ArrowRight className="w-5 h-5 text-[#013D38] transition-transform duration-200 group-hover:translate-x-1.5" />
-              </div>
-              <p className="text-[#4A5D5A] text-[14.5px] mt-2 leading-relaxed font-normal">
-                Everyday formats for home and professional spaces.
-              </p>
-            </Link>
+              <ThreeTiltCard maxTilt={5} scale={1.015} className="h-full">
+                <Link
+                  href="/shop?category=Cloths%20%26%20Wipes"
+                  className="group flex flex-col h-full p-3 rounded-2xl bg-white border border-[#EAE3D2] shadow-2xs hover:shadow-lg transition-all focus:outline-none"
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-[#EAE3D2]/40 mb-4 shadow-sm">
+                    <Image
+                      src="/images/cleaning-task-stock-v2.webp"
+                      alt="Stock up on cleaning essentials"
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between mt-1 px-1">
+                    <h3 className="font-serif text-[22px] sm:text-[23px] font-bold text-[#052033] group-hover:text-[#013D38] transition-colors">
+                      Stock up &amp; refresh
+                    </h3>
+                    <ArrowRight className="w-5 h-5 text-[#013D38] transition-transform duration-200 group-hover:translate-x-1.5" />
+                  </div>
+                  <p className="text-[#4A5D5A] text-[14.5px] mt-2 px-1 leading-relaxed font-normal">
+                    Keep your supplies ready for every day.
+                  </p>
+                </Link>
+              </ThreeTiltCard>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -341,7 +431,7 @@ export default function CleaningPage() {
             <div className="lg:col-span-6">
               <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full rounded-[4px] overflow-hidden shadow-sm bg-[#EAE3D2]/40">
                 <Image
-                  src="/images/clean_tools_stack.webp"
+                  src="/images/clean_tools_stack_v2.webp"
                   alt="High quality stacked cleaning cloths and wipes"
                   fill
                   className="object-cover"
